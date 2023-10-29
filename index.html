@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+    <script>
+      AFRAME.registerComponent("video-controller1", {
+          init: function () {
+              const target1 = document.getElementById("target1");
+              const video1 = document.getElementById("video1");
+
+              // detect target found
+              target1.addEventListener("targetFound", event => {
+                console.log("target found");
+                this.found = true;
+                video1.play();
+                video1.muted = false;
+                video1.currentTime = 0;
+              });
+              // detect target lost
+              target1.addEventListener("targetLost", event => {
+                console.log("target lost");
+                this.found = false
+                video1.pause();
+                video1.muted = true;
+                video1.currentTime = 0;
+              });
+          }
+      })
+
+  </script>
+  <style>
+    /* Some basic styling for the footer */
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      z-index: 1000; /* Set a higher z-index value */
+    }
+    table {
+      margin: 0 auto;
+    }
+
+    td {
+      padding: 5px 15px 5px 15px; /* Adjust the value as needed */
+      color: white;
+      font-size: smaller;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    td a {
+      text-decoration: underline;
+      color: inherit;
+    }
+</style>
+  </head>
+  <body>
+    <a-scene mindar-image="filterMinCF:0.000000000000000000001; filterBeta: 100000000; imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      <a-assets>
+        <video id="video1" src="./BruBangsaku Compilations 3.mov" preload webkit-playsinline playsinline loop autoplay muted></video>
+      </a-assets>
+      <a-camera camera position="0 1.6 0" look-controls="enabled: false"></a-camera>
+      <a-entity id="target1" mindar-image-target="targetIndex: 0">
+        <!-- <a-video webkit-playsinline playsinline material="src: #video1; opacity: 1; transparent: true" video-controller1 position="0 0 0" height="1.75" width="1" rotation="0 0 0"></a-video> -->
+        <a-plane src="#video1" video-controller1 webkit-playsinline playsinline></a-plane>
+      </a-entity>
+    </a-scene>
+
+    <footer>
+      <p>Developed by Brunei's <a href="https://atlarus.github.io/Portfolio">Atlarus Enterprise</a></p>
+  </footer>
+  </body>
+</html>
